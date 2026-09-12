@@ -1,0 +1,14 @@
+Blockade Display Bold 1.000
+
+Original display lettering created for Barrage Blockade.
+All glyph geometry is authored in tools/art/build_display_font.py.
+No Airstrike or other third-party font outlines are incorporated.
+Built with fontTools; the build tool is not included in the game.
+104 mapped characters: printable ASCII plus common typographic aliases.
+Lowercase characters intentionally use capital letterforms.
+The game uses Godot's fallback font for small body text.
+
+Buttons use Blockade Vector Bold, an OFL derivative of supplied SSG Vector Bold.
+Original copyright (c) 2026, Steady State Games; license: fonts/vector-bold/OFL.txt.
+tools/art/build_button_font.py aligns capital bounds and widens H by 6%.
+The supplied source font is preserved unchanged.
