@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8">
-		<meta name="barrage-build" content="20260913-173709">
+		<meta name="barrage-build" content="20260913-180443">
 		<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
 		<meta name="theme-color" content="#0e0f14">
 		<meta name="apple-mobile-web-app-capable" content="yes">
@@ -100,6 +100,7 @@ body {
 #brand { text-align: center; color: #ffad38; letter-spacing: .1em; }
 #brand strong { display: block; font-size: clamp(24px, 6vw, 42px); font-weight: 900; font-style: italic; }
 #brand p { color: #9da9b8; font-size: 13px; letter-spacing: .04em; margin-top: 20px; }
+#brand .tip { max-width: 320px; padding: 0 24px; font-size: 16px; line-height: 1.5; letter-spacing: 0; }
 #status-progress { accent-color: #ffad38; height: 8px; max-width: 340px; bottom: 25%; }
 </style>
 		<link id="-gd-engine-icon" rel="icon" type="image/png" href="index.icon.png" />
@@ -116,7 +117,7 @@ body {
 			Your browser does not support JavaScript.
 		</noscript>
 
-		<div id="status"><div id="brand"><strong>BARRAGE<br>BLOCKADE</strong><p>Preparing your arsenal...</p></div>
+		<div id="status"><div id="brand"><strong>BARRAGE<br>BLOCKADE</strong><p>Preparing your arsenal...</p><p class="tip">TIP: Armor Piercing gets damage through armor. Armor Strip removes armor for your next attacks.</p></div>
 			<img id="status-splash" class="show-image--true fullsize--true use-filter--true" src="index.png" alt="">
 			<progress id="status-progress"></progress>
 			<div id="status-notice"></div>
@@ -124,7 +125,7 @@ body {
 
 		<script src="index.js"></script>
 		<script>
-const GODOT_CONFIG = {"args":[],"canvasResizePolicy":2,"emscriptenPoolSize":8,"ensureCrossOriginIsolationHeaders":false,"executable":"index","experimentalVK":false,"fileSizes":{"index.pck":51874588,"index.wasm":39514754},"focusCanvas":true,"gdextensionLibs":[],"godotPoolSize":4,"serviceWorker":"index.service.worker.js"};
+const GODOT_CONFIG = {"args":[],"canvasResizePolicy":2,"emscriptenPoolSize":8,"ensureCrossOriginIsolationHeaders":false,"executable":"index","experimentalVK":false,"fileSizes":{"index.pck":51883720,"index.wasm":39514754},"focusCanvas":true,"gdextensionLibs":[],"godotPoolSize":4,"serviceWorker":"index.service.worker.js"};
 const GODOT_THREADS_ENABLED = false;
 const engine = new Engine(GODOT_CONFIG);
 
