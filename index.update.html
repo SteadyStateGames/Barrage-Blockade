@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0e0f14">
+<title>Update Barrage Blockade</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#0e0f14;color:#eef1f5;font:17px/1.5 system-ui,sans-serif;padding:32px 20px}main{max-width:480px;margin:8vh auto}h1{color:#ffad38;font-size:30px;line-height:1.15}p{color:#b8c2cf}button,a{display:block;width:100%;padding:18px;border-radius:12px;border:0;background:#ffad38;color:#111;font:700 18px system-ui;text-align:center;text-decoration:none;cursor:pointer}button:disabled{opacity:.55;cursor:wait}small{display:block;margin:14px 0;color:#aeb9c8;overflow-wrap:anywhere}[hidden]{display:none!important}#status{min-height:3em}
+</style>
+<main>
+<h1>BARRAGE BLOCKADE</h1>
+<h2>Update your game</h2>
+<p>This downloads the latest game files. Your saved progress stays in place.</p>
+<small id="version">Checking installed version…</small>
+<p id="status" role="status" aria-live="polite">Keep this page open and stay online while the update downloads.</p>
+<button id="update">Update game</button>
+<a id="play" href="./" hidden>Open updated game</a>
+<small>After updating, use “Open updated game” here. Close any older game tabs or app windows.</small>
+</main>
+<script>
+'use strict';
+let latestBuild='20260913-010927';
+const status=document.getElementById('status'),version=document.getElementById('version');
+const update=document.getElementById('update'),play=document.getElementById('play');
+async function installedBuild(){
+ const response=await fetch('./index.html',{cache:'no-store'});
+ if(!response.ok)throw new Error('Could not read the installed game.');
+ const doc=new DOMParser().parseFromString(await response.text(),'text/html');
+ return doc.querySelector('meta[name="barrage-build"]')?.content||'Earlier release';
+}
+async function refreshLatest(){
+ const response=await fetch('./index.version.json?check='+Date.now(),{cache:'no-store'});
+ if(!response.ok)throw new Error('Could not check for an update. Stay online and try again.');
+ latestBuild=(await response.json()).build;
+}
+async function showVersion(){version.textContent=`Installed: ${await installedBuild()} · Latest: ${latestBuild}`;}
+function installed(worker){
+ return new Promise((resolve,reject)=>{
+  const timer=setTimeout(()=>finish(new Error('The download is taking too long. Stay online and try again.')),180000);
+  function finish(error){clearTimeout(timer);worker.removeEventListener('statechange',changed);error?reject(error):resolve();}
+  function changed(){if(['installed','activated'].includes(worker.state))finish();else if(worker.state==='redundant')finish(new Error('The update download failed. Please try again.'));}
+  worker.addEventListener('statechange',changed);changed();
+ });
+}
+async function activate(worker){
+ await new Promise((resolve,reject)=>{
+  const timer=setTimeout(()=>finish(new Error('The update could not activate. Close other game windows and try again.')),30000);
+  function finish(error){clearTimeout(timer);navigator.serviceWorker.removeEventListener('controllerchange',changed);error?reject(error):resolve();}
+  function changed(){finish();}
+  navigator.serviceWorker.addEventListener('controllerchange',changed);
+  worker.postMessage('claim');
+ });
+}
+update.addEventListener('click',async()=>{
+ update.disabled=true;play.hidden=true;
+ try{
+  if(!('serviceWorker' in navigator))throw new Error('This browser cannot install the offline game.');
+  status.textContent='Downloading the latest game… This may take a minute.';
+  await refreshLatest();
+  const registration=await navigator.serviceWorker.register('./index.service.worker.js',{scope:'./',updateViaCache:'none'});
+  await registration.update();
+  if(registration.installing)await installed(registration.installing);
+  if(registration.waiting){status.textContent='Activating the update…';await activate(registration.waiting);}
+  else if(!navigator.serviceWorker.controller&&registration.active)await activate(registration.active);
+  const actual=await installedBuild();
+  if(actual!==latestBuild)throw new Error('This page is older than the available build, or the update did not activate. Reload this update page and try again.');
+  await showVersion();
+  status.textContent='Update ready. Your saved progress has been kept.';
+  update.hidden=true;play.hidden=false;
+ }catch(error){status.textContent=error.message;update.disabled=false;}
+});
+refreshLatest().then(showVersion).catch(()=>{version.textContent=`Latest: ${latestBuild}`;});
+</script>
+</html>
