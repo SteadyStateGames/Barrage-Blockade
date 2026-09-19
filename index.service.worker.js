@@ -4,7 +4,7 @@
 // Incrementing CACHE_VERSION will kick off the install event and force
 // previously cached resources to be updated from the network.
 /** @type {string} */
-const CACHE_VERSION = '1789845471|2986284';
+const CACHE_VERSION = '1789845471|2986284-startup-fix';
 /** @type {string} */
 const CACHE_PREFIX = 'Barrage Blockade-sw-cache-';
 const CACHE_NAME = CACHE_PREFIX + CACHE_VERSION;
@@ -21,7 +21,7 @@ const CACHEABLE_FILES = ["index.wasm","index.pck"];
 const FULL_CACHE = CACHED_FILES.concat(CACHEABLE_FILES, ["index.png", "index.manifest.json", "index.144x144.png", "index.180x180.png", "index.512x512.png"]);
 
 self.addEventListener('install', (event) => {
-	event.waitUntil(caches.open(CACHE_NAME).then((cache) => cache.addAll(FULL_CACHE)));
+	event.waitUntil(caches.open(CACHE_NAME).then((cache) => cache.addAll(FULL_CACHE.map((name) => new Request(name, { cache: 'reload' })))));
 });
 
 self.addEventListener('activate', (event) => {
