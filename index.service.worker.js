@@ -4,7 +4,7 @@
 // Incrementing CACHE_VERSION will kick off the install event and force
 // previously cached resources to be updated from the network.
 /** @type {string} */
-const CACHE_VERSION = '1789850263|2898189';
+const CACHE_VERSION = '1789851222|3021503';
 /** @type {string} */
 const CACHE_PREFIX = 'Barrage Blockade-sw-cache-';
 const CACHE_NAME = CACHE_PREFIX + CACHE_VERSION;
