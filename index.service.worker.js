@@ -4,7 +4,7 @@
 // Incrementing CACHE_VERSION will kick off the install event and force
 // previously cached resources to be updated from the network.
 /** @type {string} */
-const CACHE_VERSION = '1789710615|2782844-godot-credit-1';
+const CACHE_VERSION = '1789710615|2782844-no-credit-2';
 /** @type {string} */
 const CACHE_PREFIX = 'Barrage Blockade-sw-cache-';
 const CACHE_NAME = CACHE_PREFIX + CACHE_VERSION;
